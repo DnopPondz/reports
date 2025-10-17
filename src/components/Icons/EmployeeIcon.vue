@@ -1,0 +1,43 @@
+<template>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="38"
+    height="38"
+    viewBox="0 0 38 38"
+    fill="none"
+  >
+    <g clip-path="url(#clip0_19_187)">
+      <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M24.9499 12.97C24.9499 16.6 22.2299 19.6 18.6799 19.6C15.1299 19.6 12.3199 16.6 12.3199 12.97C12.3199 9.34 15.2199 6.34 18.6799 6.34C22.1399 6.34 24.9499 9.34 24.9499 12.97Z"
+        :fill="color"
+      />
+      <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M8.49999 24.87V28.78H28.85V24.87C28.85 23.24 27.67 21.96 26.21 21.96H11.22C9.66999 21.96 8.48999 23.23 8.48999 24.87H8.49999Z"
+        :fill="color"
+      />
+      <path
+        d="M30.77 37.27H6.5C2.92 37.27 0 34.35 0 30.77V6.5C0 2.92 2.92 0 6.5 0H30.77C34.35 0 37.27 2.92 37.27 6.5V30.77C37.27 34.35 34.35 37.27 30.77 37.27ZM6.5 3C4.57 3 3 4.57 3 6.5V30.77C3 32.7 4.57 34.27 6.5 34.27H30.77C32.7 34.27 34.27 32.7 34.27 30.77V6.5C34.27 4.57 32.7 3 30.77 3H6.5Z"
+        :fill="color"
+      />
+    </g>
+    <defs>
+      <clipPath id="clip0_19_187">
+        <rect width="37.27" height="37.27" fill="white" />
+      </clipPath>
+    </defs>
+  </svg>
+</template>
+
+<script setup>
+import { defineProps } from "vue";
+defineProps({
+  color: {
+    type: String,
+    required: true,
+  },
+});
+</script>

@@ -1,0 +1,31 @@
+<template>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="38"
+    height="21"
+    viewBox="0 0 38 21"
+    fill="none"
+  >
+    <g clip-path="url(#clip0_19_174)">
+      <path
+        d="M37.95 0H27.19L31.51 4.32C28.27 7.43 25.04 10.54 21.8 13.65C19.36 11.34 16.91 9.03 14.47 6.72C13.93 6.21 13.1 6.2 12.55 6.72C8.50995 10.57 4.45995 14.41 0.419953 18.25C-0.850047 19.45 1.06995 21.37 2.33995 20.17C6.06995 16.63 9.79995 13.09 13.53 9.55C15.98 11.86 18.42 14.17 20.87 16.48C21.41 16.99 22.24 17 22.79 16.48C26.34 13.07 29.9 9.65 33.45 6.24L37.97 10.76V0H37.95Z"
+        :fill="color"
+      />
+    </g>
+    <defs>
+      <clipPath id="clip0_19_174">
+        <rect width="37.95" height="20.55" fill="white" />
+      </clipPath>
+    </defs>
+  </svg>
+</template>
+
+<script setup>
+import { defineProps } from "vue";
+defineProps({
+  color: {
+    type: String,
+    required: true,
+  },
+});
+</script>
