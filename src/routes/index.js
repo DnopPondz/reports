@@ -5,7 +5,7 @@ import Dashboard from "@/components/DashboardIndex.vue";
 import ChartReporting from "@/components/ChartReporting.vue";
 import SyncDataSystem from "@/components/System/SyncDataSystem.vue";
 import Employees from "@/components/Employees/EmpIndex.vue";
-import AzureLogin from "@/components/AzureLogin.vue";
+import UserLogin from "@/components/UserLogin.vue";
 import EmployeeTimeSheetDetail from "@/components/Employees/EmployeeTimeSheetDetail.vue";
 import DepartIndex from "@/components/Departments/DepartIndex.vue";
 import DepartmentDetail from "@/components/Departments/DepartmentDetail.vue";
@@ -92,15 +92,9 @@ const routes = [
     meta: { ...permission.auth, title: "Employee TimeSheet Detail" },
   },
   {
-    path: "/azure-login",
-    name: "azureLogin",
-    component: AzureLogin,
-    meta: { title: "Login" },
-  },
-  {
-    path: "/auth/callback",
-    name: "azureCallback",
-    component: AzureLogin,
+    path: "/login",
+    name: "login",
+    component: UserLogin,
     meta: { title: "Login" },
   },
 ];

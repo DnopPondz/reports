@@ -1,10 +1,9 @@
 import { API_BASE_URL } from "@/apiConfig";
 import { useAuthStore } from "@/stores/authStore";
-import { useRouter } from "vue-router";
+import router from "@/router";
 
 export const fetchApi = async (url, options) => {
   const authStore = useAuthStore();
-  const router = useRouter();
 
   const fetchOptions = options;
 
@@ -75,7 +74,7 @@ export const errorAuth = async (response, authStore, router) => {
 
 export const backLogin = (router, authStore) => {
   authStore.logout();
-  router.push("/azure-login");
+  router.push("/login");
 };
 
 //log activities

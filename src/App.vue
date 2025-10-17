@@ -8,7 +8,7 @@
             authStore.isAuthenticated && authStore.userRole === 'admin'
           "
         /> -->
-        <div class="flex flex-1" :class="{ 'bg-mvc-lg-1': route.name === 'azureLogin' }">
+        <div class="flex flex-1" :class="{ 'bg-mvc-lg-1': route.name === 'login' }">
           <!-- Left Menu -->
           <!-- v-if="authStore.isAuthenticated" -->
           <div
@@ -39,7 +39,7 @@
       <div
         v-else
         class="min-h-screen flex justify-center items-center"
-        :class="{ 'bg-mvc-lg-1': route.name === 'azureLogin' }"
+        :class="{ 'bg-mvc-lg-1': route.name === 'login' }"
       >
         <div
           class="flex flex-col justify-center items-center gap-10 min-h-[300px] min-w-[300px] md:h-[400px] md:w-[500px] p-2 md:p-10 rounded-3xl shadow-xl bg-white border"
@@ -79,7 +79,7 @@ let inactivityTimeout;
 let logoutTimeout;
 
 const resetInactivityTimeout = async () => {
-  const routerLogin = route?.name === "azureLogin" || route?.name === undefined;
+  const routerLogin = route?.name === "login" || route?.name === undefined;
 
   if (!routerLogin) {
     isInactive.value = false;

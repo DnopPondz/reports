@@ -40,6 +40,6 @@ const emp = ref(parsedEmployee);
 
 const handleLogout = () => {
   authStore.logout();
-  router.push("/azure-login");
+  router.push("/login");
 };
 </script>
