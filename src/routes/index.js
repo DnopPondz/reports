@@ -97,6 +97,11 @@ const routes = [
     component: UserLogin,
     meta: { title: "Login" },
   },
+  {
+    path: "/azure-login",
+    redirect: { name: "login" },
+    meta: { title: "Login" },
+  },
 ];
 
 export default routes;
