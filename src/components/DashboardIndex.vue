@@ -104,7 +104,7 @@
 
                   <ul
                     v-if="compuFilterProjects.length"
-                    class="absolute z-50 mt-2 max-h-52 w-full list-none overflow-y-auto rounded-xl border border-gray-200 bg-white p-2 shadow-lg"
+                    class="mt-2 max-h-52 w-full list-none overflow-y-auto rounded-xl border border-gray-200 bg-white p-2 shadow-lg"
                   >
                     <li
                       v-for="project in compuFilterProjects"
@@ -275,7 +275,7 @@
 
                     <ul
                       v-if="compuFilterProjects.length"
-                      class="absolute z-50 mt-2 max-h-52 w-full list-none overflow-y-auto rounded-xl border border-gray-200 bg-white p-2 shadow-lg"
+                      class="mt-2 max-h-52 w-full list-none overflow-y-auto rounded-xl border border-gray-200 bg-white p-2 shadow-lg"
                     >
                       <li
                         v-for="project in compuFilterProjects"
