@@ -94,16 +94,17 @@
                 <p class="text-sm font-medium uppercase tracking-wide text-gray-500">
                   Find a project
                 </p>
-                <div class="relative z-50">
+                <div class="relative z-50" @mouseleave="closeProjectDropdown">
                   <input
                     class="w-full rounded-xl border border-gray-300 bg-white py-2 pl-4 pr-10 text-sm shadow-sm transition focus:border-movaci-main focus:outline-none focus:ring-2 focus:ring-movaci-main/40"
                     type="text"
                     v-model="searchQuery"
+                    @focus="openProjectDropdown"
                     placeholder="Search projects..."
                   />
 
                   <ul
-                    v-if="compuFilterProjects.length"
+                    v-if="isProjectDropdownOpen && compuFilterProjects.length"
                     class="absolute z-50 mt-2 max-h-52 w-full list-none overflow-y-auto rounded-xl border border-gray-200 bg-white p-2 shadow-lg"
                   >
                     <li
@@ -265,16 +266,17 @@
                   <p class="text-sm font-medium uppercase tracking-wide text-gray-500">
                     Find a project
                   </p>
-                  <div class="relative z-40 max-w-xl">
+                  <div class="relative z-40 max-w-xl" @mouseleave="closeProjectDropdown">
                     <input
                       class="w-full rounded-xl border border-gray-300 bg-white py-2 pl-4 pr-10 text-sm shadow-sm transition focus:border-movaci-main focus:outline-none focus:ring-2 focus:ring-movaci-main/40"
                       type="text"
                       v-model="searchQuery"
+                      @focus="openProjectDropdown"
                       placeholder="Search projects..."
                     />
 
                     <ul
-                      v-if="compuFilterProjects.length"
+                      v-if="isProjectDropdownOpen && compuFilterProjects.length"
                       class="absolute z-50 mt-2 max-h-52 w-full list-none overflow-y-auto rounded-xl border border-gray-200 bg-white p-2 shadow-lg"
                     >
                       <li
@@ -406,6 +408,7 @@ const pickDates = ref([]);
 const projects = ref([]);
 const searchQuery = ref("");
 const filteredProjects = ref([]);
+const isProjectDropdownOpen = ref(false);
 const projectPickers = ref([]);
 const projectSelected = ref([]);
 
@@ -493,6 +496,24 @@ const compuFilterProjects = computed(() => {
     return projects.value;
   }
 });
+
+watch(searchQuery, (value) => {
+  if (!value) {
+    isProjectDropdownOpen.value = false;
+  } else {
+    isProjectDropdownOpen.value = compuFilterProjects.value.length > 0;
+  }
+});
+
+const openProjectDropdown = () => {
+  if (searchQuery.value) {
+    isProjectDropdownOpen.value = compuFilterProjects.value.length > 0;
+  }
+};
+
+const closeProjectDropdown = () => {
+  isProjectDropdownOpen.value = false;
+};
 
 const inActiveFeature = ref(true);
 
@@ -614,6 +635,7 @@ const fetchProjects = async () => {
 
 function selectProject(project, type = null, id = null) {
   searchQuery.value = "";
+  isProjectDropdownOpen.value = false;
   if (type === null) {
     let check = projectPickers.value.find((p) => p.code === project.code);
     if (!check) {
