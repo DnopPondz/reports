@@ -8,7 +8,7 @@
           :show-list-menu="false"
         />
          <div class="flex justify-end items-center pr-6 mt-2 ">
-    <p class="px-4 py-1.5 bg-movaci-main rounded-full shadow-sm text-sm font-medium text-white tracking-wide border border-gray-200">
+    <p class="py-2 px-4 border-2 rounded-full capitalize transition-all duration-700 ease-out bg-movaci-main text-white">
       {{ dateTime }}
     </p>
   </div>
