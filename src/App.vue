@@ -21,10 +21,10 @@
               class="bg-[#fafcff]"
               :class="drawerOpen ? '' : 'hidden'"
             />
-            <div class="absolute top-[6rem] right-[-1.5rem] z-[99] inset-y-0 h-[50px]">
+            <div class="absolute top-[5.3rem] right-[-0.8rem] z-[99] inset-y-0 h-[50px]">
               <button
                 @click="toggleDrawer"
-                class="py-4 px-1 w-[50px] h-[50px] text-white bg-movaci-main hover:bg-mvc-lg-1 border-2 border-mvc-main-hover hover:border-movaci-main rounded-full shadow-md"
+                class="py-4 px-1 w-[50px] h-[50px] text-white bg-movaci-main hover:bg-mvc-lg-1 border-2 border-mvc-main-hover hover:border-movaci-main rounded-lg shadow-md"
               ></button>
             </div>
           </div>

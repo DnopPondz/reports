@@ -1,8 +1,13 @@
 <template>
   <div class="padding-screen-max">
     <div class="flex justify-between items-center">
-      <h1 class="font-bold text-3xl">All Projects</h1>
-      <input type="text" v-model="searchName" placeholder="Search projects..." />
+      <h1 class="py-2 px-4 border-2 rounded-full capitalize transition-all duration-700 ease-out bg-movaci-main text-white">All Projects</h1>
+      <input
+            v-model="searchName"
+            type="text"
+            placeholder="🔍 Search Projects..."
+            class="w-60 px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+          />
     </div>
     <LoadingS1 v-if="loading" />
     <div v-else class="h-[75vh] overflow-auto">
