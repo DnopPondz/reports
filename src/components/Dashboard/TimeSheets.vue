@@ -1,13 +1,13 @@
 <template>
   <div class="">
-    <h1 class="font-bold text-3xl padding-screen-max">Dashboard</h1>
-    <div class="flex justify-between pb-8 padding-screen-max">
-      <div>
+    <!-- <h1 class="font-bold text-3xl padding-screen-max">Dashboard</h1> -->
+    <div class="flex justify-between padding-screen-max">
+      <!-- <div>
         <h3 class="capitalize">
           Time Sheet Report today (TSR)
-          <!-- <small class="text-red-500">get time sheets from BHR api</small> -->
+         
         </h3>
-      </div>
+      </div> -->
       <button
         v-if="false"
         class="bg-blue-300 hover:bg-blue-500 text-white rounded-full py-2 px-4"
@@ -19,15 +19,15 @@
       </button>
     </div>
     <div
-      class="flex flex-col items-center w-full pt-4 pb-10 bg-mvc-lg-1 padding-screen-max"
+      class="flex flex-col items-center w-full pt-4 pb-10 -1 padding-screen-max"
     >
       <div
         class="flex justify-between space-x-4 gap-2 lg:gap-10 w-full"
         v-if="!loadingTimeSheet"
       >
-        <div class="w-full">
+        <div class="w-full  bg-mvc-lg-1 p-5 shadow-xl rounded-xl">
           <div
-            class="capitalize flex items-center text-center pt-3 pb-6 border-b-2 border-movaci-main"
+            class="capitalize flex items-center text-center  pb-6 border-b-2 border-movaci-main"
           >
             <ImageIcon
               :logo="clockIN"
@@ -36,14 +36,16 @@
             <p
               class="rounded-r-xl p-2 w-[50px] h-[50px] bg-white grid items-center font-bold text-3xl text-movaci-main"
             >
-              {{ dashboard.empTimeSheet?.empWithTimeSheet?.count }}
+              {{ dashboard.empTimeSheet?.empWithTimeSheet?.count || 0 }}
             </p>
+            <p className="pl-2 font-bold text-lg">Clock In</p>
           </div>
           <EmployeeListStyle1Component :EmpListDisplay="EmpWithTimeSheets" />
+      
         </div>
-        <div class="w-full">
+        <div class="w-full  bg-mvc-lg-1 p-5 shadow-xl rounded-xl">
           <div
-            class="capitalize flex items-center text-center pt-3 pb-6 border-b-2 border-movaci-main"
+            class="capitalize flex items-center text-center  pb-6 border-b-2 border-movaci-main"
           >
             <ImageIcon
               :logo="clockOUT"
@@ -52,8 +54,9 @@
             <p
               class="rounded-r-xl p-2 w-[50px] h-[50px] bg-white grid items-center font-bold text-3xl text-movaci-main"
             >
-              {{ dashboard.empTimeSheet?.empWithOutTimeSheet?.count }}
+              {{ dashboard.empTimeSheet?.empWithOutTimeSheet?.count || 0 }}
             </p>
+            <p className="pl-2 font-bold text-lg">Clock out</p>
           </div>
           <EmployeeListStyle1Component :EmpListDisplay="EmpWithOutTimeSheets" />
         </div>
@@ -61,12 +64,12 @@
       <LoadingS1 v-else />
     </div>
     <div
-      class="flex flex-col items-center w-full mt-16 py-4 bg-mvc-lg-1 padding-screen-max"
+      class="flex flex-col items-center w-full mt-1 py-4  padding-screen-max"
     >
       <div class="flex justify-between space-x-4 w-full">
-        <div v-if="!loadingTimeSheet" class="w-full">
+        <div v-if="!loadingTimeSheet" class="w-full  bg-mvc-lg-1 p-5 shadow-xl rounded-xl">
           <div
-            class="capitalize flex items-center text-center pt-3 pb-6 border-b-2 border-movaci-main"
+            class="capitalize flex items-center text-center  pb-6 border-b-2 border-movaci-main"
           >
             <ImageIcon
               :logo="timeoff"
@@ -77,6 +80,7 @@
             >
               {{ dashboard.empTimeSheet?.empTimeOffs?.count || 0 }}
             </p>
+            <p className="pl-2 font-bold text-lg">Time off</p>
           </div>
           <EmployeeListStyle1Component :EmpListDisplay="EmpWithTimeOffs" />
         </div>
@@ -104,6 +108,8 @@
         </div>
       </div>
     </div>
+
+    
   </div>
 </template>
 

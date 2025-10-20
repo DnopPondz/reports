@@ -1,36 +1,44 @@
 <template>
   <div class="padding-screen-max">
     <div>
-      <div class="flex justify-between items-center p-4 capitalize">
-        <h2 class="font-bold text-blue-500">employee</h2>
-        <input type="text" v-model="searchEmployee" placeholder="Search Employee..." />
+      <div class="flex justify-between items-center  capitalize">
+        <h2 class="py-2 px-4 border-2 rounded-full capitalize transition-all duration-700 ease-out bg-movaci-main text-white">employee</h2>
+        <input
+            v-model="searchEmployee"
+            type="text"
+            placeholder="🔍 Search Employees..."
+            class="w-60 px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+          />
       </div>
       <LoadingS1 v-if="loading" />
-      <div v-else>
-        <div
-          class="border-2 border-blue-300 rounded-xl p-4 m-2 capitalize w-full"
-          v-for="(emp, index) in filteredEmployees"
-          :key="index"
-        >
-          <div class="flex justify-between gap-6 hover:cursor-pointer">
-            <!-- <p><span class="font-bold">code: </span>{{ emp.code }}</p> -->
-            <p class="">
-              <span class="font-bold">email: </span>
-              <span class="normal-case">{{ emp.work_email }}</span>
-            </p>
-            <p><span class="font-bold">JOB: </span>{{ emp.job_title }}</p>
-          </div>
-          <div class="flex justify-between gap-6">
-            <p>
-              <span class="font-bold">name: </span>
-              <span class="normal-case"> {{ empFullname(emp) }} </span>
-            </p>
+      <div class="grid md:grid-cols-2 gap-4">
+      <div
+        v-for="(emp, index) in filteredEmployees"
+        :key="index"
+        class="border border-blue-300 rounded-xl p-4 shadow-sm hover:shadow-md hover:border-blue-400 transition cursor-pointer bg-white"
+      >
+        <!-- Top Info -->
+        <div class="flex justify-between flex-wrap gap-2 mb-2">
+          <p>
+            <span class="font-semibold">Email:</span>
+            <span class="text-gray-700 normal-case">{{ emp.work_email }}</span>
+          </p>
+          <p>
+            <span class="font-semibold">Job:</span> {{ emp.job_title }}
+          </p>
+        </div>
 
-            <p>
-              <span class="font-bold">Department: </span
-              >{{ shortDepartmentName(emp.department) }}
-            </p>
-          </div>
+        <!-- Bottom Info -->
+        <div class="flex justify-between flex-wrap gap-2 mb-3">
+          <p>
+            <span class="font-semibold">Name:</span>
+            <span class="normal-case">{{ empFullname(emp) }}</span>
+          </p>
+          <p>
+            <span class="font-semibold">Department:</span>
+            {{ shortDepartmentName(emp.department) }}
+          </p>
+        </div>
           <div class="flex justify-between gap-6" v-if="!inActiveFeature">
             <RouterLink
               :to="{
@@ -97,3 +105,16 @@ onMounted(() => {
   fetchEmployees();
 });
 </script>
+
+<style scoped>
+/* Subtle transition animation */
+.card-enter-active,
+.card-leave-active {
+  transition: all 0.3s ease;
+}
+.card-enter-from,
+.card-leave-to {
+  opacity: 0;
+  transform: translateY(10px);
+}
+</style>

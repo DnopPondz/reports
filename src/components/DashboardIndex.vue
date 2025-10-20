@@ -1,12 +1,17 @@
 <template>
   <div>
     <div v-if="inActiveFeature">
-      <div class="flex justify-between gap-2">
+      <div class="flex justify-between items-center gap-2 mr-10">
         <DashBoardMenu
           v-model:currentTab="currentTab"
           :dataMenu="dashboardMenu"
           :show-list-menu="false"
         />
+         <div class="flex justify-end items-center pr-6 mt-2 ">
+    <p class="py-2 px-4 border-2 rounded-full capitalize transition-all duration-700 ease-out bg-movaci-main text-white">
+      {{ dateTime }}
+    </p>
+  </div>
         <button
           v-if="false"
           class="bg-blue-300 hover:bg-blue-500 text-white rounded-full py-2 px-4"
@@ -16,6 +21,7 @@
         >
           sync
         </button>
+        
       </div>
 
       <div v-if="!loadingSyncTimeSheet">
@@ -314,7 +320,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed, watch } from "vue";
+import { ref, onMounted, computed, watch, onBeforeUnmount  } from "vue";
 import { API_BASE_URL } from "@/apiConfig";
 import { fetchApi, setOption } from "@/utils/fechtApi";
 import DashBoardMenu from "./Dashboard/DashBoardMenu.vue";
@@ -324,6 +330,7 @@ import AlertComponent from "./Materials/AlertComponent.vue";
 import { dashboardMenu, chartsMenu, mainMenu } from "@/navList";
 import InputDateComponent from "./Materials/InputDateComponent.vue";
 import { useRoute, useRouter } from "vue-router";
+
 
 const route = useRoute();
 const router = useRouter();
@@ -724,4 +731,27 @@ watch(
     return;
   }
 );
+
+
+
+const formatDateTime = () => {
+  return new Intl.DateTimeFormat("en-GB", {
+    day: "2-digit",
+    month: "short", 
+    year: "numeric",
+  }).format(new Date());
+};
+
+const dateTime = ref(formatDateTime());
+let interval;
+
+onMounted(() => {
+  interval = setInterval(() => {
+    dateTime.value = formatDateTime();
+  }, 1000);
+});
+
+onBeforeUnmount(() => {
+  clearInterval(interval);
+});
 </script>

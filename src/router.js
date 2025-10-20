@@ -16,10 +16,10 @@ router.beforeEach((to, from, next) => {
   const matchAccess = checkAccess();
   const { requiresAuth, requiresRole } = to.meta;
 
-  if (to.name === "azureLogin" && authStore.isAuthenticated) {
+  if (to.name === "login" && authStore.isAuthenticated) {
     next({ name: "DashboardIndex" });
   } else if (requiresAuth && !authStore.isAuthenticated) {
-    next({ name: "azureLogin" });
+    next({ name: "login" });
   } else if (requiresRole && authStore.userRole !== requiresRole) {
     next({ name: "DashboardIndex" });
   } else if (to.name === "LogIndex" && !matchAccess) {

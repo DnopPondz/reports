@@ -8,7 +8,7 @@
             authStore.isAuthenticated && authStore.userRole === 'admin'
           "
         /> -->
-        <div class="flex flex-1" :class="{ 'bg-mvc-lg-1': route.name === 'azureLogin' }">
+        <div class="flex flex-1" :class="{ 'bg-mvc-lg-1': route.name === 'login' }">
           <!-- Left Menu -->
           <!-- v-if="authStore.isAuthenticated" -->
           <div
@@ -21,10 +21,10 @@
               class="bg-[#fafcff]"
               :class="drawerOpen ? '' : 'hidden'"
             />
-            <div class="absolute top-[6rem] right-[-1.5rem] z-[99] inset-y-0 h-[50px]">
+            <div class="absolute top-[5.3rem] right-[-0.8rem] z-[99] inset-y-0 h-[50px]">
               <button
                 @click="toggleDrawer"
-                class="py-4 px-1 w-[50px] h-[50px] text-white bg-movaci-main hover:bg-mvc-lg-1 border-2 border-mvc-main-hover hover:border-movaci-main rounded-full shadow-md"
+                class="py-4 px-1 w-[50px] h-[50px] text-white bg-movaci-main hover:bg-mvc-lg-1 border-2 border-mvc-main-hover hover:border-movaci-main rounded-lg shadow-md"
               ></button>
             </div>
           </div>
@@ -39,7 +39,7 @@
       <div
         v-else
         class="min-h-screen flex justify-center items-center"
-        :class="{ 'bg-mvc-lg-1': route.name === 'azureLogin' }"
+        :class="{ 'bg-mvc-lg-1': route.name === 'login' }"
       >
         <div
           class="flex flex-col justify-center items-center gap-10 min-h-[300px] min-w-[300px] md:h-[400px] md:w-[500px] p-2 md:p-10 rounded-3xl shadow-xl bg-white border"
@@ -79,7 +79,7 @@ let inactivityTimeout;
 let logoutTimeout;
 
 const resetInactivityTimeout = async () => {
-  const routerLogin = route?.name === "azureLogin" || route?.name === undefined;
+  const routerLogin = route?.name === "login" || route?.name === undefined;
 
   if (!routerLogin) {
     isInactive.value = false;
