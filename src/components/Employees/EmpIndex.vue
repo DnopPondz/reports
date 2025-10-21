@@ -1,7 +1,7 @@
 <template>
   <div class="padding-screen-max">
     <div>
-      <div class="flex justify-between items-center  capitalize">
+      <div class="flex justify-between items-center capitalize">
         <h2 class="py-2 px-4 border-2 rounded-full capitalize transition-all duration-700 ease-out bg-movaci-main text-white">employee</h2>
         <input
             v-model="searchEmployee"
@@ -12,7 +12,7 @@
       </div>
       <LoadingS1 v-if="loading" />
       <div v-else>
-        <div v-if="paginatedEmployees.length" class="grid md:grid-cols-2 gap-4">
+        <div v-if="paginatedEmployees.length" class="grid md:grid-cols-2 gap-4 mt-3">
           <div
             v-for="(emp, index) in paginatedEmployees"
             :key="index"
@@ -57,7 +57,7 @@
           <p>🔎 No employees found</p>
         </div>
 
-        <div class="flex items-center justify-center gap-4 mt-10" v-if="totalPages > 1">
+        <div class="flex items-center justify-center gap-4 mt-5" v-if="totalPages > 1">
           <button
             @click="prevPage"
             :disabled="currentPage === 1"
