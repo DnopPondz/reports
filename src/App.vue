@@ -1,6 +1,6 @@
 <template>
   <div id="app-vue">
-    <div class="flex flex-col">
+    <div class="flex flex-col h-screen">
       <div v-if="!isInactive">
         <!-- <MainAppbar class="relative -z-50" v-if="authStore.isAuthenticated" /> -->
         <!-- <AdminAppbar
@@ -8,12 +8,12 @@
             authStore.isAuthenticated && authStore.userRole === 'admin'
           "
         /> -->
-        <div class="flex flex-1" :class="{ 'bg-mvc-lg-1': route.name === 'login' }">
+        <div class="flex flex-1 h-screen" :class="{ 'bg-mvc-lg-1': route.name === 'login' }">
           <!-- Left Menu -->
           <!-- v-if="authStore.isAuthenticated" -->
           <div
             v-if="authStore.isAuthenticated"
-            class="relative transition-transform ease-out transform duration-300 h-screen"
+            class="sticky top-0 flex-shrink-0 relative transition-transform ease-out transform duration-300 h-screen"
             :class="drawerOpen ? 'translate-x-0' : '-translate-x-full'"
           >
             <DrawerBar
@@ -28,7 +28,7 @@
               ></button>
             </div>
           </div>
-          <div class="w-full">
+          <div class="flex-1 h-screen overflow-y-auto">
             <MainAppbar class="relative -z-50" v-if="authStore.isAuthenticated" />
             <!-- <div class="padding-screen-max"> -->
             <router-view class="py-6"></router-view>
