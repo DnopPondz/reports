@@ -11,6 +11,7 @@ import DepartIndex from "@/components/Departments/DepartIndex.vue";
 import DepartmentDetail from "@/components/Departments/DepartmentDetail.vue";
 import LogIndex from "@/components/LogUsers/LogIndex.vue";
 import MsaIndex from "@/components/Msa/MsaIndex.vue";
+import MsaIndex2 from "@/components/Msa2/MsaIndex2.vue";
 
 const permission = {
   accessLevel: { requireAccess: true },
@@ -74,9 +75,16 @@ const routes = [
     meta: { ...permission.auth, ...permission.accessLevel },
   },
   {
-    path: "/movaci-msa",
+    path: "/msa",
     name: "MsaIndex",
     component: MsaIndex,
+    props: true,
+    meta: { ...permission.auth, ...permission.accessLevel },
+  },
+  {
+    path: "/msa-table",
+    name: "MsaIndex2",
+    component: MsaIndex2,
     props: true,
     meta: { ...permission.auth, ...permission.accessLevel },
   },

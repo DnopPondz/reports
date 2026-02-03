@@ -131,8 +131,8 @@ const iconList = ref([
   ProjectIcon,
   EmployeeIcon,
   DepartmentIcon,
-  LogIcon,
   MsaIcon,
+  LogIcon,
 ]);
 
 const menuList = ref(mainMenu);

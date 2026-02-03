@@ -27,13 +27,18 @@ export const mainMenu = [
     routeName: { name: "DepartmentIndex", hash: "" },
   },
   {
+    name: "MSA",
+    routeName: { name: "MsaIndex", hash: "" },
+  },
+  {
     name: "Log",
     routeName: { name: "LogIndex", hash: "" },
   },
-  {
-    name: "Movaci MSA",
-    routeName: { name: "MsaIndex", hash: "" },
-  }
+  
+  // {
+  //   name: "MSA Table",
+  //   routeName: { name: "MsaIndex2", hash: "" },
+  // }
 ];
 
 export const adminMenu = [
