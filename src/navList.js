@@ -30,6 +30,10 @@ export const mainMenu = [
     name: "Log",
     routeName: { name: "LogIndex", hash: "" },
   },
+  {
+    name: "Movaci MSA",
+    routeName: { name: "MsaIndex", hash: "" },
+  }
 ];
 
 export const adminMenu = [

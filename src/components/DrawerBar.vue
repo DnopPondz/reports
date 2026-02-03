@@ -1,8 +1,11 @@
 <template>
   <!-- Drawer Menu -->
-  <div class="relative z-[100] h-full w-64 shadow-lg bg-movaci-main">
+  <div class="relative z-[100] h-full w-56 shadow-lg bg-movaci-main flex flex-col justify-between">
+    
+    <div >
     <LogoTitleComponent class="py-4 flex gap-2 justify-center items-center" />
-    <div class="pt-[6rem]">
+    
+      
       <ul class="flex flex-col w-full gap-2">
         <li
           class="pl-6 cursor-pointer w-full"
@@ -99,7 +102,10 @@
           </ul>
         </li>
       </ul>
+    
+
     </div>
+<p className=" text-center mb-5 text-white text-sm ">Movaci Reports Ver 2.0</p>
   </div>
 </template>
 
@@ -116,6 +122,8 @@ import ReportIcon from "./Icons/ReportIcon.vue";
 import ProjectIcon from "./Icons/ProjectIcon.vue";
 import EmployeeIcon from "./Icons/EmployeeIcon.vue";
 import DepartmentIcon from "./Icons/DepartmentIcon.vue";
+import LogIcon from "./Icons/LogIcon.vue"
+import MsaIcon from "./Icons/MsaIcon.vue";
 
 const iconList = ref([
   DashboardIcon,
@@ -123,6 +131,8 @@ const iconList = ref([
   ProjectIcon,
   EmployeeIcon,
   DepartmentIcon,
+  LogIcon,
+  MsaIcon,
 ]);
 
 const menuList = ref(mainMenu);

@@ -1,12 +1,17 @@
 <template>
   <div>
     <div v-if="inActiveFeature">
-      <div class="flex justify-between gap-2">
+      <div class="flex justify-between items-center gap-2 mr-10">
         <DashBoardMenu
           v-model:currentTab="currentTab"
           :dataMenu="dashboardMenu"
           :show-list-menu="false"
         />
+         <div class="flex justify-end items-center pr-6  ">
+    <p class="py-2 px-4 border-2 rounded-full capitalize transition-all duration-700 ease-out bg-movaci-main text-white">
+      {{ dateTime }}
+    </p>
+  </div>
         <button
           v-if="false"
           class="bg-blue-300 hover:bg-blue-500 text-white rounded-full py-2 px-4"
@@ -16,6 +21,7 @@
         >
           sync
         </button>
+        
       </div>
 
       <div v-if="!loadingSyncTimeSheet">
@@ -30,23 +36,35 @@
         />
         <div
           id="chart-reports"
-          class="shadow-md p-4 border-2 border-gray-200 rounded-lg my-4"
+          class="my-4 rounded-2xl border-2 border-gray-200 bg-white p-6 shadow-lg"
           v-if="currentTab === dashboardMenu[1].type"
         >
-          <h2 class="mt-4">Please Select Type Reports :</h2>
-          <DashBoardMenu
-            id="chart-menu"
-            class="mt-2"
-            v-model:currentTab="currentChartTab"
-            :dataMenu="chartsMenu"
-          />
           <div
-            class="p-2 shadow-md border-2 border-blue-200 rounded-lg my-4"
+            class="flex flex-col gap-4 border-b border-gray-200 pb-4 md:flex-row md:items-center md:justify-between"
+          >
+            <h2 class="text-2xl font-semibold text-gray-800">
+              Choose the report type to get started
+            </h2>
+            <DashBoardMenu
+              id="chart-menu"
+              class="mt-1 md:mt-0"
+              v-model:currentTab="currentChartTab"
+              :dataMenu="chartsMenu"
+            />
+          </div>
+          <div
+            class="mt-6 space-y-8 rounded-2xl border-2 border-blue-200 bg-blue-50/40 p-6"
             v-if="currentChartTab !== 'customizev2'"
           >
-            <div id="select-date">
-              <div class="max-w-[300px]">
-                <div class="px-4 py-2" v-if="currentChartTab === 'date'">
+            <div
+              class="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]"
+              id="select-date"
+            >
+              <div class="space-y-4">
+                <p class="text-sm font-medium uppercase tracking-wide text-gray-500">
+                  Date range
+                </p>
+                <div v-if="currentChartTab === 'date'" class="max-w-xs">
                   <InputDateComponent
                     labelTitle="Select Date"
                     v-model="start"
@@ -54,7 +72,7 @@
                     type="date"
                   />
                 </div>
-                <div class="px-4 py-2" v-if="currentChartTab === 'month'">
+                <div v-if="currentChartTab === 'month'" class="max-w-xs">
                   <InputDateComponent
                     labelTitle="Select Month"
                     v-model="startMonth"
@@ -62,10 +80,7 @@
                     type="month"
                   />
                 </div>
-                <div
-                  v-if="currentChartTab === 'year'"
-                  class="flex flex-col space-y-4 w-full mx-auto px-4 py-2"
-                >
+                <div v-if="currentChartTab === 'year'" class="max-w-xs">
                   <InputDateComponent
                     labelTitle="Select Year"
                     v-model="startYear"
@@ -75,55 +90,72 @@
                   />
                 </div>
               </div>
-            </div>
-            <div class="flex justify-between" id="select-project">
-              <div class="relative z-50 w-auto px-4 py-2">
-                <input
-                  class="rounded-lg border active:ring-green-300 p-2"
-                  type="text"
-                  v-model="searchQuery"
-                  placeholder="Search projects..."
-                />
+              <div class="space-y-4" id="select-project">
+                <p class="text-sm font-medium uppercase tracking-wide text-gray-500">
+                  Find a project
+                </p>
+                <div class="relative z-50">
+                  <input
+                    class="w-full rounded-xl border border-gray-300 bg-white py-2 pl-4 pr-10 text-sm shadow-sm transition focus:border-movaci-main focus:outline-none focus:ring-2 focus:ring-movaci-main/40"
+                    type="text"
+                    v-model="searchQuery"
+                    placeholder="Search projects..."
+                  />
 
-                <ul
-                  v-if="compuFilterProjects.length"
-                  class="p-0 list-none mt-[5px] border border-[#ddd] max-h-[150px] overflow-y-auto"
-                >
-                  <li
-                    v-for="project in compuFilterProjects"
-                    :key="project.id"
-                    @click="selectProject(project)"
-                    class="p-2 cursor-pointer hover:bg-[#f0f0f0]"
+                  <ul
+                    v-if="compuFilterProjects.length"
+                    class="mt-2 max-h-52 w-full list-none overflow-y-auto rounded-xl border border-gray-200 bg-white p-2 shadow-lg"
                   >
-                    {{ project.name }}
-                  </li>
-                </ul>
+                    <li
+                      v-for="project in compuFilterProjects"
+                      :key="project.id"
+                      @click="selectProject(project)"
+                      class="cursor-pointer rounded-lg px-3 py-2 text-sm transition hover:bg-movaci-main/10"
+                    >
+                      {{ project.name }}
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
-            <div v-if="currentChartTab !== 'customizev2'" class="p-2">
-              <h4 class="capitalize px-4 py-2 font-bold text-2xl">Project list :</h4>
+            <div class="space-y-3" v-if="currentChartTab !== 'customizev2'">
+              <h4 class="text-lg font-semibold text-gray-800">Selected projects</h4>
               <p
-                class="flex justify-between gap-2 border-b-2 border-blue-200"
-                v-for="(item, index) in projectPickers"
-                :key="index"
+                v-if="!projectPickers.length"
+                class="rounded-xl border border-dashed border-gray-300 bg-white px-4 py-3 text-sm text-gray-500"
               >
-                {{ item.name }}
-                <button @click="removeProject(item.id)">x</button>
+                Use the search above to add projects to your report.
               </p>
-            </div>
-            <div>
-              <div class="flex justify-end items-center" id="search-chart-report">
-                <button
-                  class="bg-green-300 p-2 rounded-lg capitalize"
-                  @click="searchProjectSelect()"
+              <ul v-else class="space-y-2">
+                <li
+                  class="flex items-center justify-between rounded-xl bg-white px-4 py-3 text-sm shadow-sm"
+                  v-for="(item, index) in projectPickers"
+                  :key="index"
                 >
-                  search
-                </button>
-              </div>
+                  <span class="font-medium text-gray-700">{{ item.name }}</span>
+                  <button
+                    class="rounded-full bg-red-100 px-3 py-1 text-xs font-semibold text-red-600 transition hover:bg-red-200"
+                    @click="removeProject(item.id)"
+                  >
+                    Remove
+                  </button>
+                </li>
+              </ul>
+            </div>
+            <div class="flex flex-col items-center justify-between gap-4 sm:flex-row">
+              <p class="text-sm text-gray-500">
+                Configure your filters and select search to update the charts.
+              </p>
+              <button
+                class="w-full rounded-full bg-movaci-main px-6 py-3 text-sm font-semibold uppercase tracking-wide text-white shadow-md transition hover:bg-movaci-main/90 sm:w-auto"
+                @click="searchProjectSelect()"
+              >
+                Search
+              </button>
             </div>
 
             <template v-if="currentChartTab !== 'customizev2'">
-              <div v-if="projectSelected?.length > 0">
+              <div v-if="projectSelected?.length > 0" class="rounded-2xl bg-white p-4 shadow-inner">
                 <ChartBar
                   :start="start"
                   :end="end"
@@ -135,99 +167,107 @@
             </template>
           </div>
           <div class="flex flex-col" v-else>
-            <!-- <h2>v2</h2> -->
-
             <template v-for="(item, index) in customList" :key="index">
               <div
-                class="flex flex-col shadow-md p-4 border-2 border-blue-200 rounded-lg my-4"
+                class="my-4 space-y-6 rounded-2xl border-2 border-blue-200 bg-blue-50/40 p-6 shadow-md"
               >
-                <!-- {{ item }} -->
-                <div class="flex justify-between">
-                  <div class="flex gap-2">
-                    <div class="p-2">
-                      <div class="flex flex-col items-center justify-center">
-                        <label class="block text-gray-700 font-medium capitalize"
-                          >select type:</label
+                <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+                  <div class="grid flex-1 gap-6 md:grid-cols-2">
+                    <div class="space-y-3">
+                      <label class="text-sm font-medium uppercase tracking-wide text-gray-500"
+                        >Select type</label
+                      >
+                      <select
+                        v-model="item.currentType"
+                        @input="clearCustomSelect(item.id)"
+                        class="w-full rounded-xl border border-gray-300 bg-white px-4 py-2 text-sm font-medium capitalize shadow-sm transition focus:border-movaci-main focus:outline-none focus:ring-2 focus:ring-movaci-main/40"
+                      >
+                        <option
+                          v-for="(type, index) in types"
+                          :key="index"
+                          :value="type.name"
                         >
-                        <select
-                          v-model="item.currentType"
-                          @input="clearCustomSelect(item.id)"
-                          class="block w-full px-4 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                        >
-                          <option
-                            v-for="(type, index) in types"
-                            :key="index"
-                            :value="type.name"
-                          >
-                            {{ type.name }}
-                          </option>
-                        </select>
-                      </div>
+                          {{ type.name }}
+                        </option>
+                      </select>
                     </div>
-                    <div id="select-date" class="py-2">
-                      <div
-                        class="flex items-center justify-center gap-2"
-                        v-if="item.currentType === 'date'"
-                      >
-                        <InputDateComponent
-                          labelTitle="Select start"
-                          v-model="item.datePicker.start"
-                          :maxDate="maxDate"
-                          type="date"
-                        />
+                    <div class="space-y-3" id="select-date">
+                      <p class="text-sm font-medium uppercase tracking-wide text-gray-500">
+                        Date range
+                      </p>
+                      <div class="flex flex-col gap-4">
+                        <div
+                          class="flex flex-col gap-4 md:flex-row"
+                          v-if="item.currentType === 'date'"
+                        >
+                          <InputDateComponent
+                            labelTitle="Select start"
+                            v-model="item.datePicker.start"
+                            :maxDate="maxDate"
+                            type="date"
+                          />
 
-                        <InputDateComponent
-                          labelTitle="Select end"
-                          v-model="item.datePicker.end"
-                          :maxDate="maxDate"
-                          type="date"
-                        />
-                      </div>
-                      <div
-                        class="flex items-center justify-center gap-2"
-                        v-if="item.currentType === 'month'"
-                      >
-                        <InputDateComponent
-                          labelTitle="Select Start Month"
-                          v-model="item.datePicker.start"
-                          :maxDate="maxDate"
-                          type="month"
-                        />
-                        <InputDateComponent
-                          labelTitle="Select End Month"
-                          v-model="item.datePicker.end"
-                          :maxDate="maxDate"
-                          type="month"
-                        />
-                      </div>
-                      <div
-                        class="flex items-center justify-center gap-2"
-                        v-if="item.currentType === 'year'"
-                      >
-                        <InputDateComponent
-                          labelTitle="Select Year"
-                          v-model="item.datePicker.start"
-                          :maxDate="maxDate"
-                          :years="years"
-                          type="year"
-                        />
-                        <InputDateComponent
-                          labelTitle="Select Year"
-                          v-model="item.datePicker.end"
-                          :maxDate="maxDate"
-                          :years="years"
-                          type="year"
-                        />
+                          <InputDateComponent
+                            labelTitle="Select end"
+                            v-model="item.datePicker.end"
+                            :maxDate="maxDate"
+                            type="date"
+                          />
+                        </div>
+                        <div
+                          class="flex flex-col gap-4 md:flex-row"
+                          v-if="item.currentType === 'month'"
+                        >
+                          <InputDateComponent
+                            labelTitle="Select Start Month"
+                            v-model="item.datePicker.start"
+                            :maxDate="maxDate"
+                            type="month"
+                          />
+                          <InputDateComponent
+                            labelTitle="Select End Month"
+                            v-model="item.datePicker.end"
+                            :maxDate="maxDate"
+                            type="month"
+                          />
+                        </div>
+                        <div
+                          class="flex flex-col gap-4 md:flex-row"
+                          v-if="item.currentType === 'year'"
+                        >
+                          <InputDateComponent
+                            labelTitle="Select Year"
+                            v-model="item.datePicker.start"
+                            :maxDate="maxDate"
+                            :years="years"
+                            type="year"
+                          />
+                          <InputDateComponent
+                            labelTitle="Select Year"
+                            v-model="item.datePicker.end"
+                            :maxDate="maxDate"
+                            :years="years"
+                            type="year"
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
-                  <button @click="removeCustomList(item.id)">x</button>
+                  <button
+                    class="self-start rounded-full bg-red-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-red-600 transition hover:bg-red-200"
+                    @click="removeCustomList(item.id)"
+                  >
+                    Remove form
+                  </button>
                 </div>
 
-                <div class="flex justify-between" id="select-project">
-                  <div class="relative z-50">
+                <div class="space-y-4" id="select-project">
+                  <p class="text-sm font-medium uppercase tracking-wide text-gray-500">
+                    Find a project
+                  </p>
+                  <div class="relative z-40 max-w-xl">
                     <input
-                      class="rounded-lg border active:ring-green-300 p-2"
+                      class="w-full rounded-xl border border-gray-300 bg-white py-2 pl-4 pr-10 text-sm shadow-sm transition focus:border-movaci-main focus:outline-none focus:ring-2 focus:ring-movaci-main/40"
                       type="text"
                       v-model="searchQuery"
                       placeholder="Search projects..."
@@ -235,41 +275,58 @@
 
                     <ul
                       v-if="compuFilterProjects.length"
-                      class="p-0 list-none mt-[5px] border border-[#ddd] max-h-[150px] overflow-y-auto"
+                      class="mt-2 max-h-52 w-full list-none overflow-y-auto rounded-xl border border-gray-200 bg-white p-2 shadow-lg"
                     >
                       <li
                         v-for="project in compuFilterProjects"
                         :key="project.id"
                         @click="selectProject(project, 'custom', item.id)"
-                        class="p-2 cursor-pointer hover:bg-[#f0f0f0]"
+                        class="cursor-pointer rounded-lg px-3 py-2 text-sm transition hover:bg-movaci-main/10"
                       >
                         {{ project.name }}
                       </li>
                     </ul>
                   </div>
                 </div>
-                <div id="projects-list " class="px-4 py-2">
-                  <h4 class="capitalize px-4 py-2 font-bold text-2xl">Project list :</h4>
+                <div class="space-y-3" id="projects-list ">
+                  <h4 class="text-lg font-semibold text-gray-800">Selected projects</h4>
                   <p
-                    class="flex justify-between gap-2 border-b-2 border-blue-200"
-                    v-for="(project, index) in item.projectList"
-                    :key="index"
+                    v-if="!item.projectList.length"
+                    class="rounded-xl border border-dashed border-gray-300 bg-white px-4 py-3 text-sm text-gray-500"
                   >
-                    {{ project.name }}
-                    <button @click="removeProject(project.id, item.id)">x</button>
+                    Use the search above to add projects to this form.
                   </p>
-                </div>
-                <div>
-                  <div class="flex items-center justify-end" id="search-chart-report">
-                    <button
-                      class="bg-green-300 p-2 rounded-lg capitalize"
-                      @click="searchProjectSelect(item.id)"
+                  <ul v-else class="space-y-2">
+                    <li
+                      class="flex items-center justify-between rounded-xl bg-white px-4 py-3 text-sm shadow-sm"
+                      v-for="(project, index) in item.projectList"
+                      :key="index"
                     >
-                      search
-                    </button>
-                  </div>
+                      <span class="font-medium text-gray-700">{{ project.name }}</span>
+                      <button
+                        class="rounded-full bg-red-100 px-3 py-1 text-xs font-semibold text-red-600 transition hover:bg-red-200"
+                        @click="removeProject(project.id, item.id)"
+                      >
+                        Remove
+                      </button>
+                    </li>
+                  </ul>
                 </div>
-                <div v-if="item.projectSelected?.length > 0">
+                <div class="flex flex-col items-center justify-between gap-4 sm:flex-row">
+                  <p class="text-sm text-gray-500">
+                    Configure your filters and select search to update the charts.
+                  </p>
+                  <button
+                    class="w-full rounded-full bg-movaci-main px-6 py-3 text-sm font-semibold uppercase tracking-wide text-white shadow-md transition hover:bg-movaci-main/90 sm:w-auto"
+                    @click="searchProjectSelect(item.id)"
+                  >
+                    Search
+                  </button>
+                </div>
+                <div
+                  v-if="item.projectSelected?.length > 0"
+                  class="rounded-2xl bg-white p-4 shadow-inner"
+                >
                   <ChartBar
                     :key="index"
                     :keyIndex="index + 1"
@@ -283,12 +340,12 @@
                 </div>
               </div>
             </template>
-            <div>
+            <div class="mt-6">
               <button
-                class="bg-blue-300 capitalize border-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 h-[50px] min-w-[100px]"
+                class="w-full rounded-full border-2 border-dashed border-movaci-main px-6 py-3 text-sm font-semibold uppercase tracking-wide text-movaci-main transition hover:bg-movaci-main/10 sm:w-auto"
                 @click="addForm"
               >
-                create form
+                Create new form
               </button>
             </div>
           </div>
@@ -314,7 +371,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed, watch } from "vue";
+import { ref, onMounted, computed, watch, onBeforeUnmount  } from "vue";
 import { API_BASE_URL } from "@/apiConfig";
 import { fetchApi, setOption } from "@/utils/fechtApi";
 import DashBoardMenu from "./Dashboard/DashBoardMenu.vue";
@@ -324,6 +381,7 @@ import AlertComponent from "./Materials/AlertComponent.vue";
 import { dashboardMenu, chartsMenu, mainMenu } from "@/navList";
 import InputDateComponent from "./Materials/InputDateComponent.vue";
 import { useRoute, useRouter } from "vue-router";
+
 
 const route = useRoute();
 const router = useRouter();
@@ -724,4 +782,27 @@ watch(
     return;
   }
 );
+
+
+
+const formatDateTime = () => {
+  return new Intl.DateTimeFormat("en-GB", {
+    day: "2-digit",
+    month: "short", 
+    year: "numeric",
+  }).format(new Date());
+};
+
+const dateTime = ref(formatDateTime());
+let interval;
+
+onMounted(() => {
+  interval = setInterval(() => {
+    dateTime.value = formatDateTime();
+  }, 1000);
+});
+
+onBeforeUnmount(() => {
+  clearInterval(interval);
+});
 </script>

@@ -1,87 +1,120 @@
 <template>
-  <div class="padding-screen-max">
-    <div class="my-[5%] flex justify-between">
+  <div class="max-w-6xl mx-auto px-6 py-8">
+    <!-- Header Section -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
+      <!-- Back Button -->
       <button
-        class="px-4 py-2 bg-blue-500 font-bold rounded-xl hover:bg-blue-300 text-white hover:text-black"
         @click="handleBack"
         type="button"
+        class="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-semibold rounded-xl shadow-md transition-all duration-200 flex items-center gap-2"
       >
-        Back
+        ← Back
       </button>
-      <input
-        type="month"
-        v-model="datePick"
-        :max="maxMonth"
-        @change="handleInputChange"
-      />
+
+      <!-- Month Picker -->
+      <div class="relative flex items-center gap-3">
+        <label for="monthPicker" class="sr-only">Select Month</label>
+
+        <input
+          id="monthPicker"
+          type="month"
+          v-model="datePick"
+          :max="maxMonth"
+          @change="handleInputChange"
+          class="w-[230px] rounded-lg border border-gray-300 bg-white px-4 py-2.5 shadow-sm text-gray-800 
+                 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 
+                 hover:border-blue-400 hover:shadow-md"
+        />
+
+
+        
+      </div>
     </div>
 
-    <div v-if="!loading">
-      <!-- <h2>detail</h2> -->
-      <div class="flex justify-between">
-        <!-- <p>code : {{ code }}</p> -->
-        <p class="font-bold text-2xl">
-          <span>
-            {{ empFullname(empWithTimeSheets) }}
-          </span>
+    <!-- Main Content -->
+    <div v-if="!loading" class="space-y-6">
+      <!-- Employee Info Card -->
+      <div class="bg-white shadow-md rounded-xl p-6 border border-gray-200">
+        <h2 class="text-2xl font-bold text-gray-800 mb-2">
+          {{ empFullname(empWithTimeSheets) }}
+        </h2>
+        <p class="text-gray-600 text-lg">
+          <span class="font-semibold text-gray-800">Total Hours:</span>
+          {{ empWithTimeSheets?.group_total_hours || 0 }}
         </p>
       </div>
-      <div>total hours : {{ empWithTimeSheets?.group_total_hours || 0 }}</div>
-      <div v-if="!alert.message">
-        <div v-for="(timesheet, date) in empWithTimeSheets.groupedTimeSheets" :key="date">
-          <div class="my-4">
-            <h2 class="text-3xl font-bold">{{ date }}</h2>
-            <ul class="border border-gray-400 p-2 rounded-xl my-2 shadow-lg">
-              <li
-                class="flex flex-col gap-2 py-2 px-4 my-4 w-full capitalize bg-blue-50 rounded-lg shadow-lg"
-                v-for="(item, index) in timesheet"
-                :key="index"
-              >
-                <div class="flex items-center justify-between">
-                  <p>
-                    <span class="text-xl">Project: </span>
-                    {{ item.project_infos[0]?.project.name }}
-                  </p>
-                  <p>
-                    <span class="text-xl">task: </span>
-                    {{ item.project_infos[1]?.task.name }}
-                  </p>
-                </div>
-                <div class="flex items-center justify-between">
-                  <p>
-                    <span class="text-xl">start: </span>
-                    <span class="normal-case">
-                      {{
-                        item?.start ? formatDateTimeZone(item.start, item.timezone) : null
-                      }}</span
-                    >
-                  </p>
-                  <p>
-                    <span class="text-xl">end: </span>
-                    {{ item?.end ? formatDateTimeZone(item?.end, item.timezone) : null }}
-                  </p>
-                </div>
-                <div>
-                  <p>
-                    <span class="text-xl">hours:</span>
-                    {{ item.hours > 0 ? item.hours_time : null }}
-                  </p>
-                  <p>
-                    <span class="text-xl">note:</span>
-                    <!-- <span class="normal-case">{{ item.note }}</span> -->
-                    <span class="normal-case" v-html="item.note"></span>
-                  </p>
-                </div>
-              </li>
-            </ul>
-          </div>
+
+      <!-- Timesheet List -->
+      <div v-if="!alert.message" class="space-y-8">
+        <div
+          v-for="(timesheet, date) in empWithTimeSheets.groupedTimeSheets"
+          :key="date"
+          class="bg-white rounded-xl shadow-lg border border-gray-200 p-6"
+        >
+          <h3 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">
+            {{ date }}
+          </h3>
+
+          <ul class="space-y-4">
+            <li
+              v-for="(item, index) in timesheet"
+              :key="index"
+              class="bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-200 rounded-xl p-4 shadow-sm hover:shadow-md transition"
+            >
+              <!-- Project & Task -->
+              <div class="flex flex-col md:flex-row md:justify-between gap-2 mb-3">
+                <p class="text-gray-800">
+                  <span class="font-semibold text-blue-700">Project:</span>
+                  {{ item.project_infos[0]?.project.name }}
+                </p>
+                <p class="text-gray-800">
+                  <span class="font-semibold text-blue-700">Task:</span>
+                  {{ item.project_infos[1]?.task.name }}
+                </p>
+              </div>
+
+              <!-- Start & End -->
+              <div class="flex flex-col md:flex-row md:justify-between gap-2 mb-2">
+                <p>
+                  <span class="font-semibold text-blue-700">Start:</span>
+                  <span class="text-gray-700 normal-case">
+                    {{ item?.start ? formatDateTimeZone(item.start, item.timezone) : '-' }}
+                  </span>
+                </p>
+                <p>
+                  <span class="font-semibold text-blue-700">End:</span>
+                  <span class="text-gray-700 normal-case">
+                    {{ item?.end ? formatDateTimeZone(item.end, item.timezone) : '-' }}
+                  </span>
+                </p>
+              </div>
+
+              <!-- Hours & Note -->
+              <div class="border-t border-gray-300 mt-3 pt-3 text-gray-700 space-y-1">
+                <p>
+                  <span class="font-semibold text-blue-700">Hours:</span>
+                  {{ item.hours > 0 ? item.hours_time : '—' }}
+                </p>
+                <p>
+                  <span class="font-semibold text-blue-700">Note:</span>
+                  <span class="normal-case" v-html="item.note"></span>
+                </p>
+              </div>
+            </li>
+          </ul>
         </div>
       </div>
-      <div v-else>
-        <p>{{ alert.message }}</p>
+
+      <!-- Alert Message -->
+      <div v-else class="text-center py-8">
+        <p class="text-gray-600 text-lg">{{ alert.message }}</p>
       </div>
     </div>
+
+    <!-- Loading State -->
     <LoadingS1 v-else />
+
+    <!-- Alert Component -->
     <AlertComponent
       v-if="alertVisible"
       :type="alert.type"
@@ -91,6 +124,7 @@
     />
   </div>
 </template>
+
 
 <script setup>
 import { onMounted, ref, toRefs } from "vue";
@@ -182,3 +216,16 @@ onMounted(() => {
   fetchEmployeeWithTimesheet();
 });
 </script>
+
+<style scoped>
+/* Optional subtle enhancements */
+input[type="month"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  filter: invert(0.5);
+  transition: filter 0.2s ease;
+}
+
+input[type="month"]:hover::-webkit-calendar-picker-indicator {
+  filter: invert(0);
+}
+</style>

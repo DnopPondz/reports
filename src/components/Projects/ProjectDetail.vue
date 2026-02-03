@@ -1,57 +1,64 @@
 <template>
-  <div class="padding-screen-max">
-    <div class="flex justify-between my-6">
+  <div class="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-6">
+    <div class="flex justify-between items-center mb-8">
       <button
-        class="px-4 py-2 bg-blue-500 font-bold rounded-xl hover:bg-blue-300 text-white hover:text-black"
+        class="px-5 py-2.5 bg-blue-600 font-semibold rounded-xl shadow hover:bg-blue-400 text-white transition-all"
         @click="goBack"
       >
-        Back
+        ← Back
       </button>
-      <div class="flex gap-2">
+
+      <div class="flex gap-3">
         <button
-          class="px-4 py-2 bg-green-500 font-bold rounded-xl hover:bg-green-300 text-white hover:text-black capitalize"
+          class="px-5 py-2.5 bg-emerald-600 font-semibold rounded-xl shadow hover:bg-emerald-400 text-white transition-all capitalize"
           @click="exportDetailToExcel"
         >
-          Exports entries
+          Export Entries
         </button>
         <button
-          class="px-4 py-2 bg-green-500 font-bold rounded-xl hover:bg-green-300 text-white hover:text-black capitalize"
+          class="px-5 py-2.5 bg-rose-600 font-semibold rounded-xl shadow hover:bg-rose-400 text-white transition-all capitalize"
           @click="exportToPdf"
         >
-          Export pdf
+          Export PDF
         </button>
         <button
-          class="px-4 py-2 bg-green-500 font-bold rounded-xl hover:bg-green-300 text-white hover:text-black capitalize"
+          class="px-5 py-2.5 bg-amber-500 font-semibold rounded-xl shadow hover:bg-amber-300 text-white transition-all capitalize"
           @click="exportToExcel"
         >
-          Export excel
+          Export Excel
         </button>
       </div>
     </div>
+
     <LoadingS1 v-if="loading" />
     <div v-else>
-      <div class="" id="contentToExport">
-        <div class="flex justify-between">
-          <h1 class="font-bold text-blue-500">
+      <div id="contentToExport" class="bg-white rounded-2xl shadow-lg p-6 transition-all">
+        <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+          <h1 class="font-bold text-2xl text-blue-600">
             Project: {{ project?.name }}
-            <span class="text-black">- Total Time Used: {{ project?.total_hours }}</span
-            ><span class="text-red-500">
-              - Convert to Time {{ project?.total_hours_time }}</span
-            >
+            <span class="text-gray-700 font-medium">
+              – Total Time Used: {{ project?.total_hours }}
+            </span>
+            <span class="text-red-500 font-medium">
+              – {{ project?.total_hours_time }}
+            </span>
           </h1>
+
           <input
             type="month"
             v-model="datePick"
             :max="maxMonth"
+            class="border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:ring-2 focus:ring-blue-400 focus:outline-none"
             @change="handleInputChange"
           />
         </div>
-        <div class="my-10" v-if="project?.tasks.length > 0">
+
+        <div v-if="project?.tasks.length > 0" class="mt-10 space-y-4">
           <ul>
             <li
-              class="capitalize my-4"
               v-for="(task, index) in project.tasks"
               :key="index"
+              class="bg-gradient-to-r from-white to-slate-50 hover:from-slate-50 hover:to-slate-100 border border-gray-200 rounded-xl p-4 transition-all hover:shadow-md"
             >
               <router-link
                 :to="{
@@ -59,15 +66,17 @@
                   params: { taskName: task.name, code: task.code },
                 }"
                 @click="setTaskAndNavigate(task)"
+                class="block"
               >
-                <h2>
-                  <span class="font-bold">Task</span> {{ task.name }}
-                  <span class="normal-case">- hours {{ task.total_hours }} of </span>
-                  <span v-if="task.allocated_hours > 0">{{ task.allocated_hours }}</span>
-                  <span v-else> Unlimited </span>
-                  <span class="text-red-500">
-                    - Convert to Time {{ task.total_hours_time }}</span
-                  >
+                <h2 class="text-lg font-semibold text-gray-800 mb-2">
+                  <span class="font-bold text-blue-600">Task:</span> {{ task.name }}
+                  <span class="text-gray-600">– Hours {{ task.total_hours }} of</span>
+                  <span class="text-gray-800 font-medium">
+                    {{ task.allocated_hours > 0 ? task.allocated_hours : "Unlimited" }}
+                  </span>
+                  <span class="text-red-500 font-medium">
+                    – {{ task.total_hours_time }}
+                  </span>
                 </h2>
 
                 <!-- Progress bar container -->
@@ -76,10 +85,23 @@
             </li>
           </ul>
         </div>
+
+        <div v-else class="text-center text-gray-500 mt-8">
+          No tasks available for this project.
+        </div>
       </div>
     </div>
+    <footer class="mt-16 py-6 border-t border-gray-200 text-center text-gray-600 text-sm">
+      <p>
+        Generated on: {{ generatedDate }}
+      </p>
+      <p class="mt-1">
+        Copyright © {{ currentYear }}. MOVACI CO., LTD. All rights reserved.
+      </p>
+    </footer>
   </div>
 </template>
+
 
 <script setup>
 import { ref, toRefs, defineOptions, onMounted } from "vue";
@@ -95,6 +117,24 @@ import * as XLSX from "xlsx";
 import { createLogActivities, fetchApi, setOption } from "@/utils/fechtApi";
 import LoadingS1 from "../Materials/LoadingS1.vue";
 import { formatDateTimeZone } from "@/utils/general";
+
+const generatedDate = ref("");
+const currentYear = new Date().getFullYear();
+
+onMounted(() => {
+  const now = new Date();
+
+  generatedDate.value = now.toLocaleString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+    timeZone: "Asia/Bangkok", // GMT+7
+  }) + " GMT+7";
+});
 
 defineOptions({
   name: "ProjectDetail",

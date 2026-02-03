@@ -10,6 +10,7 @@ import EmployeeTimeSheetDetail from "@/components/Employees/EmployeeTimeSheetDet
 import DepartIndex from "@/components/Departments/DepartIndex.vue";
 import DepartmentDetail from "@/components/Departments/DepartmentDetail.vue";
 import LogIndex from "@/components/LogUsers/LogIndex.vue";
+import MsaIndex from "@/components/Msa/MsaIndex.vue";
 
 const permission = {
   accessLevel: { requireAccess: true },
@@ -69,6 +70,13 @@ const routes = [
     path: "/log-user-activities",
     name: "LogIndex",
     component: LogIndex,
+    props: true,
+    meta: { ...permission.auth, ...permission.accessLevel },
+  },
+  {
+    path: "/movaci-msa",
+    name: "MsaIndex",
+    component: MsaIndex,
     props: true,
     meta: { ...permission.auth, ...permission.accessLevel },
   },
